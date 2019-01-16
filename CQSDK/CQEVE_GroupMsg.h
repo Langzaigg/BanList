@@ -22,14 +22,14 @@ font 字体
 返回非零值,消息将被拦截,最高优先不可拦截
 */
 #define EVE_GroupMsg_EX(Name) 																	\
-	int Name(CQ::EVEGroupMsg & eve);															\
+	void Name(CQ::EVEGroupMsg & eve);															\
 	EVE_GroupMsg(Name)																		\
 	{																							\
 		CQ::EVEGroupMsg tep(subType, msgId, fromGroup, fromQQ, fromAnonymous, msg, font);	\
 		Name(tep); \
 		return tep._EVEret;																		\
 	}																							\
-	int Name(CQ::EVEGroupMsg & eve)
+	void Name(CQ::EVEGroupMsg & eve)
 
 namespace CQ{
 	class GroupMemberInfo;

@@ -18,14 +18,14 @@ font		字体
 返回非零值,消息将被拦截,最高优先不可拦截
 */
 #define EVE_DiscussMsg_EX(Name)																	\
-	int Name(CQ::EVEDiscussMsg & eve);															\
+	void Name(CQ::EVEDiscussMsg & eve);															\
 	EVE_DiscussMsg(Name)																		\
 	{																							\
 		CQ::EVEDiscussMsg tep(subType, msgId, fromDiscuss, fromQQ, msg, font);					\
 		Name(tep);\
 		return tep._EVEret;																		\
 	}																							\
-	int Name(CQ::EVEDiscussMsg & eve)
+	void Name(CQ::EVEDiscussMsg & eve)
 
 
 namespace CQ {

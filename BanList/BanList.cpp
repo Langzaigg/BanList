@@ -135,11 +135,11 @@ EVE_Enable(__eventEnable)
 
 EVE_PrivateMsg_EX(__eventPrivateMsg)
 {
-	if (eve.isSystem())return 0;
+	if (eve.isSystem())return;
 	init(eve.message);
 	init2(eve.message);
 	if (eve.message[0] != '.')
-		return 0;
+		return;
 	int intMsgCnt = 1;
 	while (isspace(eve.message[intMsgCnt]))
 		intMsgCnt++;
@@ -148,11 +148,11 @@ EVE_PrivateMsg_EX(__eventPrivateMsg)
 	if (BanedQQ.count(eve.fromQQ))
 	{
 		eve.message_block();
-		return 1;
+		return;
 	}
 	else if (strLowerMessage.substr(intMsgCnt, 4) == "exit")
 	{
-	if (eve.fromQQ != MASTER) return 0;
+	if (eve.fromQQ != MASTER) return;
 		intMsgCnt += 4;
 		while (isspace(strLowerMessage[intMsgCnt]))
 			intMsgCnt++;
@@ -166,7 +166,7 @@ EVE_PrivateMsg_EX(__eventPrivateMsg)
 		{
 			if (!isdigit(i))
 			{
-				return 0;
+				return;
 			}
 		}
 		const long long llgroup = stoll(strgroup);
@@ -174,11 +174,11 @@ EVE_PrivateMsg_EX(__eventPrivateMsg)
 		if (setGroupLeave(llgroup) == 0)
 			AddMsgToQueue("已从" + strgroup + "中退出", eve.fromQQ);
 		eve.message_block();
-		return 1;
+		return;
 	}
 	else if (strLowerMessage.substr(intMsgCnt, 3) == "ban")
 	{
-	if (eve.fromQQ != MASTER) return 0;
+	if (eve.fromQQ != MASTER) return;
 		intMsgCnt += 3;
 		while (isspace(strLowerMessage[intMsgCnt]))
 			intMsgCnt++;
@@ -192,20 +192,20 @@ EVE_PrivateMsg_EX(__eventPrivateMsg)
 		{
 			if (!isdigit(i))
 			{
-				return 0;
+				return;
 			}
 		}
 		const long long llqqnum = stoll(strqqnum);
 		BanedQQ.insert(llqqnum);
-		AddMsgToQueue("您因违规操作已被列入封禁名单！请于群725116464中了解被封原因。", llqqnum);
+		AddMsgToQueue("您因违规操作已被列入封禁名单！", llqqnum);
 		AddMsgToQueue("已将" + strqqnum + "列入封禁名单！", eve.fromQQ);
 		eve.message_block();
-		return 1;
+		return;
 	}
 	else if (strLowerMessage.substr(intMsgCnt, 5) == "unban")
 	{
 
-		if (eve.fromQQ != MASTER) return 0;
+		if (eve.fromQQ != MASTER) return;
 		intMsgCnt += 5;
 		while (isspace(strLowerMessage[intMsgCnt]))
 		intMsgCnt++;
@@ -219,7 +219,7 @@ EVE_PrivateMsg_EX(__eventPrivateMsg)
 		{
 			if (!isdigit(i))
 			{
-				return 0;
+				return;
 			}
 		}
 		const long long llqqnum = stoll(strqqnum);
@@ -227,7 +227,7 @@ EVE_PrivateMsg_EX(__eventPrivateMsg)
 		AddMsgToQueue(" 您已被移出封禁名单！", llqqnum);
 		AddMsgToQueue("已将" + strqqnum + "移出封禁名单！", eve.fromQQ);
 		eve.message_block();
-		return 1;
+		return;
 	}
 	else if (strLowerMessage.substr(intMsgCnt, 4) == "info")
 	{
@@ -236,47 +236,48 @@ EVE_PrivateMsg_EX(__eventPrivateMsg)
 			intMsgCnt++;
 		AddMsgToQueue(eve.message.substr(intMsgCnt), MASTER);
 		eve.message_block();
-		return 1;
+		return;
 	}
-	return 0;
+	return;
 }
 EVE_GroupMsg_EX(__eventGroupMsg)
 {
-	if (eve.isSystem() || eve.isAnonymous())return 0;
+	if (eve.isSystem() || eve.isAnonymous())return;
 	else if (BanedQQ.count(eve.fromQQ))
 	{
 		eve.message_block();
-		return 1;
+		return;
 	}
-	else return 0;
+	else return;
 }
 EVE_DiscussMsg_EX(__eventDiscussMsg) 
 {
-	if (eve.isSystem())return 0;
+	if (eve.isSystem())return;
 	else if (BanedQQ.count(eve.fromQQ))
 	{
 		eve.message_block();
-		return 1;
+		return;
 	}
-	else return 0;
+	else return;
 }
-EVE_System_GroupMemberDecrease(__eventGroupMemberDecrease)
+EVE_System_GroupMemberDecrease(__eventSystem_GroupMemberDecrease)
 {
 	if (beingOperateQQ == getLoginQQ())
 	{
 		BanedQQ.insert(fromQQ);
-		AddMsgToQueue("您因违规操作已被列入封禁名单！请于725116464群中了解被封原因。", fromQQ);
-		AddMsgToQueue("已将" + to_string(fromQQ)+ "列入封禁名单！",MASTER);
+		AddMsgToQueue("您因违规操作已被列入封禁名单！", fromQQ);
+		AddMsgToQueue("已将" + to_string(fromQQ) + "列入封禁名单！" + "原因：被踢出群" + to_string(fromGroup), MASTER);
+		return 1;
 	}
 	return 0;
 }
-EVE_System_GroupMemberIncrease(__eventGroupMemberIncrease)
+EVE_System_GroupMemberIncrease(__eventSystem_GroupMemberIncrease)
 {
 	if (beingOperateQQ == getLoginQQ())
 	{
 		AddMsgToQueue("欢迎使用汪酱掷骰机器人，反馈&交流群：725116464。输入.help获取使用说明。\n！！！请使用.dismiss指令使汪酱退群！！！", fromGroup, false);
 	}
-	return 0;
+	return 1;
 }
 EVE_Request_AddFriend(__eventRequest_AddFriend)
 {
@@ -292,7 +293,7 @@ EVE_Request_AddGroup(__eventRequest_AddGroup)
 			return 1;
 		}
 		setGroupAddRequest(responseFlag, 2, 1, "");
-		AddMsgToQueue(getStrangerInfo(fromQQ).nick + "(" + to_string(fromQQ) + ")邀请我加入群:" + to_string(fromGroup), MASTER);
+		AddMsgToQueue(getStrangerInfo(fromQQ).nick + "(" + to_string(fromQQ) + ")邀请我加入群:" + getGroupList()[fromGroup] + "(" + to_string(fromGroup) + ")", MASTER);
 		
 	}
 	return 0;

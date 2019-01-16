@@ -19,14 +19,14 @@ font		字体
 返回非零值,消息将被拦截,最高优先不可拦截
 */
 #define EVE_PrivateMsg_EX(Name)																	\
-	int Name(CQ::EVEPrivateMsg & eve);															\
+	void Name(CQ::EVEPrivateMsg & eve);															\
 	EVE_PrivateMsg(Name)																		\
 	{																							\
 		CQ::EVEPrivateMsg tep(subType, msgId, fromQQ, msg, font); \
 		Name(tep); \
 		return tep._EVEret;																		\
 	}																							\
-	int Name(CQ::EVEPrivateMsg & eve)
+	void Name(CQ::EVEPrivateMsg & eve)
 
 
 namespace CQ{

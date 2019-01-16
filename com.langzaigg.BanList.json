@@ -104,12 +104,12 @@
         101,  //发送群消息			sendGroupMsg
         103,  //发送讨论组消息		sendDiscussMsg
         106,  //发送私聊消息		sendPrivateMsg
-        122,  //置群管理员			setGroupAdmin
 	    127,  //[敏感]置群退出	setGroupLeave
         130,  //取群成员信息		getGroupMemberInfoV2 / getGroupMemberInfo
         131,  //取陌生人信息		getStrangerInfo
         140,  //置讨论组退出		setDiscussLeave
         150,  //置好友添加请求		setFriendAddRequest
-        151   //置群添加请求		setGroupAddRequest
+        151,   //置群添加请求		setGroupAddRequest
+        161
     ]
 }
